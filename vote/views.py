@@ -1,6 +1,7 @@
-from rest_framework import permissions, status, viewsets
-from rest_framework.decorators import action
+from rest_framework import generics, pagination, permissions, status, viewsets
+from rest_framework.decorators import action, api_view, renderer_classes
 from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 from rest_framework.response import Response
 
 from .models import Choice, Poll
@@ -42,3 +43,19 @@ class PollViewSet(viewsets.ModelViewSet):
         serializer = PollSerializer(poll)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(("GET", "POST"))
+@renderer_classes((JSONRenderer, TemplateHTMLRenderer))
+def search(request, keyword, format=None):
+    res = []
+    polls_by_title = Poll.objects.filter(title=keyword)
+    for poll in polls_by_title:
+        res.append([{"id": poll.id, "title": poll.title, "description": poll.description}])
+
+    polls_by_description = Poll.objects.filter(description=keyword)
+    for poll in polls_by_description:
+        res.append([{"id": poll.id, "title": poll.title, "description": poll.description}])
+
+    final = {"res": res}
+    return Response(final, status=status.HTTP_200_OK)
