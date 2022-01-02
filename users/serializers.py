@@ -7,6 +7,8 @@ from .models import User
 
 
 class CreateUserSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
     password2 = serializers.CharField(
         help_text=(
             "The password can not start with a digit, underscore or special character and must contain at least one digit. Password length between 8 to 20"
@@ -20,19 +22,19 @@ class CreateUserSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "email",
-            "password1",
+            "password",
             "password2",
         )
         extra_kwargs = {
-            "password1": {"write_only": True},
+            "password": {"write_only": True},
         }
 
     def validate(self, data):
-        if data["password1"] == data["password2"] and re.match(
-            r"^(?=[^\d_].*?\d)\w(\w|[!@#$%]){7,20}", data["password1"]
+        if data["password"] == data["password2"] and re.match(
+            r"^(?=[^\d_].*?\d)\w(\w|[!@#$%]){7,20}", data["password"]
         ):
             return data
-        elif not re.match(r"^(?=[^\d_].*?\d)\w(\w|[!@#$%]){7,20}", data["password1"]):
+        elif not re.match(r"^(?=[^\d_].*?\d)\w(\w|[!@#$%]){7,20}", data["password"]):
             raise serializers.ValidationError("Password isn't strong enough.")
         else:
             raise serializers.ValidationError("Password doesn't match.")
@@ -42,7 +44,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
             first_name=validated_data["first_name"],
             last_name=validated_data["last_name"],
             email=validated_data["email"],
-            password=validated_data["password1"],
+            password=validated_data["password"],
         )
         return user
 

@@ -3,7 +3,7 @@ from django.urls import include, path
 
 api_patterns = [
     path("auth/", include("users.urls")),
-    path("vote/", include("vote.urls")),
+    path("", include("vote.urls")),
 ]
 
 urlpatterns = [
