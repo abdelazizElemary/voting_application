@@ -1,0 +1,5 @@
+Hello {{ user_name }},
+
+Please enter that one-time password for verification to login
+
+{{ otp }}

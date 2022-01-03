@@ -9,6 +9,9 @@ python = "^3.9"
 Django = "^4.0"
 djangorestframework = "^3.13.1"
 django-model-utils = "^4.2.0"
+dj-rest-auth = "^2.2.1"
+django-allauth = "^0.47.0"
+pyotp = "^2.6.0"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^21.12b0", allow-prereleases = true}

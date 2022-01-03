@@ -1,5 +1,7 @@
 import re
+import time
 
+import pyotp
 from django.contrib.auth import authenticate
 from rest_framework import serializers
 
@@ -40,11 +42,15 @@ class CreateUserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Password doesn't match.")
 
     def create(self, validated_data):
+        email = validated_data["email"]
+        password = validated_data["password"]
+        otp = pyotp.TOTP("base32secret3232").now()
         user = User.objects.create_user(
             first_name=validated_data["first_name"],
             last_name=validated_data["last_name"],
-            email=validated_data["email"],
-            password=validated_data["password"],
+            email=email,
+            password=password,
+            otp=otp,
         )
         return user
 
@@ -65,8 +71,10 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             "id",
+            "first_name",
             "email",
             "password",
             "is_active",
             "is_staff",
+            "otp",
         )

@@ -1,4 +1,4 @@
-from rest_framework import generics, pagination, permissions, status, viewsets
+from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action, api_view, renderer_classes
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
