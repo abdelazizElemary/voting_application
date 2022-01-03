@@ -9,6 +9,9 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
+import datetime
+
+TOKEN_TTL = datetime.timedelta(hours=1)
 
 from pathlib import Path
 
@@ -39,17 +42,20 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "users.apps.UsersConfig",
     "vote.apps.VoteConfig",
+    "authentication",
     "rest_framework",
-    "rest_framework.authtoken",
 ]
 
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 20,
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.TokenAuthentication",
+        "authentication.authentication.ExpiringTokenAuthentication",
     ],
 }
+
+REST_AUTH_TOKEN_MODEL = "authentication.models.MyToken"
+REST_AUTH_TOKEN_CREATOR = "authentication.utils.custom_create_token"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

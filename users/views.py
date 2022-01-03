@@ -1,5 +1,5 @@
+from authentication.models import MyToken as AuthToken
 from rest_framework import generics, status, viewsets
-from rest_framework.authtoken.models import Token as AuthToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
